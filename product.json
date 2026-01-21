@@ -1,0 +1,5 @@
+[
+    { "id": 1, "name": "Espresso", "price": 20000, "category": "Minuman" },
+    { "id": 2, "name": "Caffe Latte", "price": 25000, "category": "Minuman" },
+    { "id": 3, "name": "Croissant", "price": 18000, "category": "Makanan" }
+]

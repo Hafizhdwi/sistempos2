@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SmartPOS Premium Pro</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="brand">🚀 Smart<span>POS</span></div>
+        <input type="text" id="new-name" placeholder="Nama Menu" />
+        <div class="price-input-wrapper">
+          <button class="btn-price-step" onclick="stepPrice(-1000)">−</button>
+          <input type="number" id="new-price" class="price-field" value="0" />
+          <button class="btn-price-step" onclick="stepPrice(1000)">+</button>
+        </div>
+        <select id="new-category">
+          <option>Makanan</option>
+          <option>Minuman</option>
+          <option>Camilan</option>
+        </select>
+        <button onclick="addNewProduct()" class="btn-add">
+          TAMBAH KE KATALOG
+        </button>
+      </aside>
+
+      <main class="main-content">
+        <header
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+          "
+        >
+          <input
+            type="text"
+            id="search"
+            placeholder="Cari menu..."
+            style="
+              width: 300px;
+              padding: 15px;
+              border-radius: 15px;
+              border: 1px solid #eee;
+              outline: none;
+            "
+            oninput="renderProducts()"
+          />
+          <button
+            onclick="toggleCart()"
+            style="
+              padding: 12px 20px;
+              border-radius: 12px;
+              border: none;
+              background: white;
+              font-weight: 800;
+              cursor: pointer;
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+              position: relative;
+            "
+          >
+            🛒 Pesanan
+            <span
+              id="cart-badge"
+              style="
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background: var(--danger);
+                color: white;
+                padding: 2px 7px;
+                border-radius: 10px;
+                font-size: 0.7rem;
+              "
+              >0</span
+            >
+          </button>
+        </header>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+          "
+        >
+          <div style="display: flex; gap: 10px">
+            <button
+              class="btn-filter active"
+              onclick="setFilter('Semua', this)"
+            >
+              ✨ Semua
+            </button>
+            <button class="btn-filter" onclick="setFilter('Makanan', this)">
+              🍔 Makanan
+            </button>
+            <button class="btn-filter" onclick="setFilter('Minuman', this)">
+              🥤 Minuman
+            </button>
+            <button class="btn-filter" onclick="setFilter('Camilan', this)">
+              🍿 Camilan
+            </button>
+          </div>
+          <button
+            class="btn-filter"
+            onclick="sortAZ()"
+            style="border: 1px solid #eee"
+          >
+            🔤 Urut A-Z
+          </button>
+        </div>
+
+        <div id="product-grid" class="product-grid"></div>
+      </main>
+    </div>
+
+    <div
+      id="edit-modal"
+      class="modal-overlay"
+      onclick="closeModal('edit-modal')"
+    >
+      <div class="modern-modal-card" onclick="event.stopPropagation()">
+        <button class="close-modal-btn" onclick="closeModal('edit-modal')">
+          ✕
+        </button>
+        <h2 style="font-weight: 800; margin-bottom: 25px; font-size: 1.4rem">
+          Edit Menu
+        </h2>
+        <div class="input-group">
+          <label>Nama Menu</label
+          ><input type="text" id="edit-name" class="minimal-input" />
+        </div>
+        <div class="input-group">
+          <label>Harga Jual (Rp)</label
+          ><input type="number" id="edit-price" class="minimal-input" />
+        </div>
+        <div class="input-group">
+          <label>Pilih Kategori</label>
+          <div style="display: flex; gap: 8px">
+            <div
+              class="pill-choice"
+              id="pill-Makanan"
+              onclick="setEditCategory('Makanan')"
+            >
+              Makanan
+            </div>
+            <div
+              class="pill-choice"
+              id="pill-Minuman"
+              onclick="setEditCategory('Minuman')"
+            >
+              Minuman
+            </div>
+            <div
+              class="pill-choice"
+              id="pill-Camilan"
+              onclick="setEditCategory('Camilan')"
+            >
+              Camilan
+            </div>
+          </div>
+        </div>
+        <button onclick="saveEdit()" class="btn-add" style="margin-top: 10px">
+          SIMPAN PERUBAHAN
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="cart-modal"
+      class="modal-overlay"
+      onclick="closeModal('cart-modal')"
+    >
+      <div class="modern-modal-card" onclick="event.stopPropagation()">
+        <button class="close-modal-btn" onclick="closeModal('cart-modal')">
+          ✕
+        </button>
+        <h2 style="font-weight: 800; margin-bottom: 20px">🛒 Detail Pesanan</h2>
+        <div
+          id="cart-list"
+          style="max-height: 250px; overflow-y: auto; margin-bottom: 20px"
+        ></div>
+        <div class="input-group">
+          <label>Metode Pembayaran</label>
+          <div style="display: flex; gap: 10px">
+            <div
+              class="payment-btn active"
+              id="pay-CASH"
+              onclick="setPayment('CASH')"
+            >
+              💵 CASH
+            </div>
+            <div class="payment-btn" id="pay-QRIS" onclick="setPayment('QRIS')">
+              📱 QRIS
+            </div>
+          </div>
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border-top: 2px dashed #eee;
+            padding-top: 20px;
+          "
+        >
+          <span>Total</span
+          ><span id="total-price" style="color: var(--primary)">Rp 0</span>
+        </div>
+        <button
+          id="checkout-btn"
+          onclick="handleCheckout()"
+          class="btn-add"
+          style="margin-top: 20px"
+        >
+          PROSES & CETAK STRUK
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="qris-modal"
+      class="modal-overlay"
+      onclick="closeModal('qris-modal')"
+    >
+      <div
+        class="modern-modal-card"
+        style="text-align: center"
+        onclick="event.stopPropagation()"
+      >
+        <button class="close-modal-btn" onclick="closeModal('qris-modal')">
+          ✕
+        </button>
+        <h2 style="font-weight: 800; color: var(--primary)">📱 Scan QRIS</h2>
+        <div
+          style="
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 20px 0;
+            border: 2px dashed #ddd;
+          "
+        >
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=POS_PRO_PAYMENT"
+            style="width: 180px"
+          />
+        </div>
+        <h3 id="qris-total" style="font-weight: 800">Total: Rp 0</h3>
+        <button
+          onclick="confirmQRIS()"
+          class="btn-add"
+          style="background: var(--success)"
+        >
+          SUDAH BAYAR & CETAK STRUK
+        </button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
