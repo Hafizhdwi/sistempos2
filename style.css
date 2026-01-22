@@ -291,18 +291,50 @@ input[type="number"] {
   box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
 }
 
+/* --- UPDATE BAGIAN INI --- */
+
 .close-modal-btn {
   position: absolute;
   top: 20px;
   right: 20px;
   border: none;
-  background: #f1f2f6;
-  width: 32px;
-  height: 32px;
+  
+  /* Ukuran & Layout */
+  width: 36px;  /* Sedikit diperbesar agar lebih enak diklik */
+  height: 36px;
   border-radius: 50%;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Warna Awal */
+  background: #f1f2f6;
   color: #636e72;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  
+  /* --- ANIMASI MAGIC --- */
+  /* Menggunakan cubic-bezier untuk efek membal (bouncy) */
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
+
+/* Animasi saat Mouse diarahkan (Hover) */
+.close-modal-btn:hover {
+  background: var(--danger); /* Berubah jadi merah */
+  color: white;              /* Icon X jadi putih */
+  transform: rotate(180deg) scale(1.15); /* Muter 180 derajat & membesar */
+  box-shadow: 0 5px 15px rgba(255, 118, 117, 0.5); /* Efek glowing merah */
+}
+
+/* Animasi saat Diklik (Active/Click) */
+.close-modal-btn:active {
+  transform: rotate(180deg) scale(0.9); /* Efek terpencet ke dalam */
+  box-shadow: 0 2px 5px rgba(255, 118, 117, 0.5);
+}
+
+/* --- SELESAI UPDATE --- */
 
 /* Toast */
 .toast {
@@ -320,4 +352,86 @@ input[type="number"] {
 }
 .toast.show {
   bottom: 30px;
+}
+/* --- KODE TAMBAHAN UNTUK MOBILE & RASIO 9:16 --- */
+
+@media (max-width: 768px) {
+  /* Memungkinkan seluruh halaman di-scroll karena layar HP memanjang */
+  body {
+    overflow-y: auto;
+  }
+
+  .app-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Sidebar (Panel Input) diletakkan di atas */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Area Katalog Produk */
+  .main-content {
+    padding: 15px;
+    overflow-y: visible;
+  }
+
+  /* Header (Search & Tombol Pesanan) */
+  header {
+    flex-direction: column !important;
+    gap: 15px;
+    align-items: stretch !important;
+  }
+
+  #search {
+    width: 100% !important;
+    margin: 0;
+  }
+
+  /* Grid Produk: Dibuat 2 kolom agar pas di layar HP yang sempit */
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .product-card {
+    padding: 20px 10px;
+    border-radius: 20px;
+  }
+
+  /* Modal (Pop-up) agar tidak terpotong di HP */
+  .modern-modal-card {
+    width: 92%;
+    padding: 25px;
+    margin: 10px;
+  }
+
+  /* Memperbaiki tampilan tombol kategori agar bisa di-scroll menyamping jika penuh */
+  .main-content > div:nth-child(2) {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    justify-content: flex-start !important;
+  }
+
+  .btn-filter {
+    flex-shrink: 0;
+  }
+}
+
+/* Khusus untuk HP dengan layar sangat sempit */
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+  
+  .product-card h3 {
+    font-size: 0.9rem;
+  }
 }
