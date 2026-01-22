@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="id">
   <head>
+    <header>
+      <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+      <button
+        class="dark-mode-toggle"
+        id="dark-mode-btn"
+        onclick="toggleDarkMode()"
+      >
+        🌙
+      </button>
+      <button class="history-btn" onclick="showHistory()">🕒</button>
+      <input type="text" id="search" placeholder="Cari menu..." />
+    </header>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -15,9 +27,13 @@
   </head>
   <body>
     <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="dark-mode-btn">
-    🌙
-</button>
+    <button
+      class="dark-mode-toggle"
+      onclick="toggleDarkMode()"
+      id="dark-mode-btn"
+    >
+      🌙
+    </button>
     <div class="app-container" id="app-container">
       <aside class="sidebar">
         <div class="brand">🚀 Smart<span>POS</span></div>
