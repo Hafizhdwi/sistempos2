@@ -795,3 +795,170 @@ header button[onclick="toggleCart()"] {
         box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
     }
 }
+/* --- MOBILE UI NATIVE OPTIMIZATION --- */
+
+@media (max-width: 768px) {
+    /* 1. Sidebar dibuat menjadi Overlay penuh (Floating) */
+    .sidebar {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 85% !important; /* Jangan penuhi 100% agar user tahu ini sidebar */
+        height: 100vh !important;
+        z-index: 9999 !important;
+        transform: translateX(-100%); /* Sembunyi di kiri */
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 20px 0 50px rgba(0,0,0,0.3) !important;
+        display: block !important;
+    }
+
+    /* 2. Munculkan Sidebar dari samping saat tombol ditekan */
+    .app-container:not(.sidebar-hidden) .sidebar {
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+    }
+
+    /* 3. Area konten utama memenuhi layar */
+    .main-content {
+        padding: 80px 15px 20px 15px !important;
+        width: 100vw !important;
+    }
+
+    /* 4. Membuat Header (Search) tetap di atas (Sticky) */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 15px !important;
+        z-index: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        display: flex !important;
+        flex-direction: row !important; /* Biarkan tombol hamburger & search sejajar */
+        align-items: center !important;
+    }
+
+    /* 5. Sembunyikan tulisan Brand di mobile agar hemat ruang */
+    .brand {
+        font-size: 1.2rem !important;
+        margin-top: 20px;
+    }
+
+    /* 6. Grid Produk 2 Kolom yang rapi */
+    .product-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+    }
+
+    .product-card {
+        padding: 15px 10px !important;
+        border-radius: 18px !important;
+    }
+
+    /* 7. Overlay hitam saat sidebar terbuka agar user fokus */
+    .app-container:not(.sidebar-hidden)::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: 9998;
+    }
+}
+/* --- MOBILE APP-NATIVE UI (ADD-ON) --- */
+
+@media (max-width: 768px) {
+    /* Membuat Sidebar melayang dari kiri (Drawer) */
+    .sidebar {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 80% !important; /* Agar tidak menutupi seluruh layar */
+        max-width: 320px;
+        height: 100vh !important;
+        z-index: 10000 !important;
+        transform: translateX(-100%); /* Sembunyi ke kiri */
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 15px 0 30px rgba(0,0,0,0.2) !important;
+        padding-top: 80px !important;
+        overflow-y: auto;
+    }
+
+    /* Saat Sidebar AKTIF (sidebar-hidden dilepas) */
+    .app-container:not(.sidebar-hidden) .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    /* Efek Gelap di belakang Sidebar (Overlay) */
+    .app-container:not(.sidebar-hidden)::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 9999;
+        backdrop-filter: blur(2px);
+    }
+
+    /* Area Utama: Full Screen */
+    .main-content {
+        padding: 90px 15px 20px 15px !important;
+        width: 100vw !important;
+        flex: none !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* Header Sticky (Search & Hamburger) */
+    header {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        background: white;
+        z-index: 900 !important;
+        padding: 15px !important;
+        display: flex !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+
+    /* Tetap paksa Search Bar ukuran default di HP */
+    #search {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin: 0 auto !important;
+        height: 45px;
+    }
+
+    /* Grid 2 Kolom untuk HP */
+    .product-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+        margin-top: 10px;
+    }
+
+    .product-card {
+        padding: 15px 10px !important;
+        border-radius: 20px !important;
+    }
+
+    /* Tombol Keranjang Posisi HP */
+    header button[onclick="toggleCart()"] {
+        right: 15px !important;
+        top: 15px !important;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Optimasi Animasi */
+.sidebar, .main-content, #search {
+    will-change: transform, opacity;
+    -webkit-font-smoothing: antialiased;
+}

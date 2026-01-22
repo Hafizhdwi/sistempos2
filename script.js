@@ -307,3 +307,38 @@ function toggleSidebar() {
     }
   }, 400);
 }
+/* --- MOBILE LOGIC ENHANCEMENT --- */
+
+// 1. Tutup sidebar otomatis setelah menambah produk (Khusus Mobile)
+const originalAddNewProduct = addNewProduct;
+addNewProduct = function () {
+  originalAddNewProduct(); // Jalankan fungsi asli
+  if (window.innerWidth <= 768) {
+    toggleSidebar(); // Tutup sidebar
+  }
+};
+
+// 2. Klik area kosong untuk menutup sidebar di HP
+document.addEventListener("click", function (event) {
+  const container = document.getElementById("app-container");
+  const sidebar = document.querySelector(".sidebar");
+  const hamburger = document.querySelector(".hamburger-btn");
+
+  // Jika sidebar sedang terbuka dan yang diklik bukan sidebar/tombol hamburger
+  if (
+    window.innerWidth <= 768 &&
+    !container.classList.contains("sidebar-hidden") &&
+    !sidebar.contains(event.target) &&
+    !hamburger.contains(event.target)
+  ) {
+    toggleSidebar();
+  }
+});
+
+// 3. Pastikan fungsi toggleSidebar menggunakan performa terbaik
+function toggleSidebar() {
+  const container = document.getElementById("app-container");
+  requestAnimationFrame(() => {
+    container.classList.toggle("sidebar-hidden");
+  });
+}
