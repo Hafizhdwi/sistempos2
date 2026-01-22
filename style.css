@@ -1180,156 +1180,86 @@ header button[onclick="toggleCart()"] {
     outline: none !important;
     border-color: var(--primary) !important;
 }
-/* --- FIX WARNA MODAL EDIT DI DARK MODE --- */
+/* --- FIX BACKGROUND KATALOG DARK MODE --- */
 
-/* 1. Paksa background Modal Card jadi gelap */
-[data-theme="dark"] .modern-modal-card,
-[data-theme="dark"] .modal-content {
-    background-color: #1e212e !important;
-    color: white !important;
+/* 1. Paksa area utama dan body menjadi gelap */
+[data-theme="dark"], 
+[data-theme="dark"] body, 
+[data-theme="dark"] .app-container, 
+[data-theme="dark"] .main-content {
+    background-color: #13151c !important; /* Warna dasar gelap yang elegan */
+    background: #13151c !important;
 }
 
-/* 2. Paksa semua input dan select di dalam modal agar background-nya gelap */
-[data-theme="dark"] .modern-modal-card input,
-[data-theme="dark"] .modern-modal-card select,
-[data-theme="dark"] .modern-modal-card textarea {
-    background-color: #2d303e !important; /* Warna abu gelap */
-    color: white !important; /* Teks putih */
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+/* 2. Pastikan area tempat kartu produk menempel juga gelap */
+[data-theme="dark"] .product-grid {
+    background-color: transparent !important;
 }
 
-/* 3. Khusus untuk elemen select sebelum diklik (Initial State) */
-[data-theme="dark"] select {
-    color: white !important;
-    background-color: #2d303e !important;
+/* 3. Menyesuaikan warna teks filter agar tidak hilang di background gelap */
+[data-theme="dark"] .filter-container,
+[data-theme="dark"] .categories-tabs {
+    background: transparent !important;
 }
 
-/* 4. Perbaiki label input agar terbaca */
-[data-theme="dark"] .modern-modal-card label {
-    color: #a0aec0 !important;
+/* 4. Jika ada elemen pembungkus lain yang masih putih */
+[data-theme="dark"] section, 
+[data-theme="dark"] main {
+    background-color: #13151c !important;
 }
-
-/* 5. Perbaiki judul modal */
-[data-theme="dark"] .modern-modal-card h2,
-[data-theme="dark"] .modern-modal-card h3 {
-    color: white !important;
-}
-/* --- FIX OVERSPACE & MOBILE HEIGHT ISSUES --- */
+/* --- OPTIMASI ANIMASI SIDEBAR (FAST & SLIDE LEFT) --- */
 
 @media (max-width: 768px) {
-    /* 1. Reset tinggi container agar tidak memaksa space tambahan */
-    html, body {
-        height: -webkit-fill-available; /* Fix untuk browser mobile */
-        overflow-x: hidden;
-        background-color: var(--light-bg); /* Pastikan background warna dasar */
+    .sidebar {
+        /* Memastikan posisi awal benar-benar di luar layar sebelah kiri */
+        transform: translate3d(-100%, 0, 0) !important; 
+        
+        /* Mengunci transisi hanya untuk properti transform */
+        /* Durasi 0.2s agar sangat cepat (snappy) */
+        transition: transform 0.2s ease-in-out !important; 
+        
+        /* Menghilangkan efek transisi lain yang bikin 'narik' ke atas */
+        top: 0 !important;
+        position: fixed !important;
+        will-change: transform; /* Optimasi performa GPU HP */
     }
 
+    /* Saat Sidebar muncul */
+    .app-container:not(.sidebar-hidden) .sidebar {
+        transform: translate3d(0, 0, 0) !important;
+    }
+
+    /* Menghilangkan animasi pada container agar konten tidak ikut goyang/lompat */
     .app-container {
-        min-height: 100vh;
-        min-height: -webkit-fill-available;
-        display: flex;
-        flex-direction: column;
-        height: auto !important; /* Biarkan konten menentukan tinggi */
-    }
-
-    /* 2. Bersihkan Main Content dari margin/padding berlebih */
-    .main-content {
-        flex: 1; /* Mengisi ruang yang tersedia saja */
-        padding-bottom: 100px !important; /* Ruang untuk tombol keranjang mengambang */
-        height: auto !important;
-        min-height: unset !important;
-        overflow-y: visible !important; /* Hindari double scrollbar */
-    }
-
-    /* 3. Pastikan Product Grid tidak mendorong footer/space kosong */
-    .product-grid {
-        padding-bottom: 20px !important;
-        margin-bottom: 0 !important;
-    }
-
-    /* 4. Fix Dark Mode background agar tidak terpotong di bawah */
-    [data-theme="dark"] body {
-        background-attachment: fixed;
+        transition: none !important;
     }
 }
-
-/* 5. Sembunyikan scrollbar yang mengganggu estetika mobile */
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-}
-/* --- PIXEL PERFECT OPTIMIZATION (720x1280 / 9:16) --- */
+/* --- FIX ANIMASI BALIK SIDEBAR (DIRECT LEFT EXIT) --- */
 
 @media (max-width: 768px) {
-    /* 1. Paksa tinggi layar pas dengan viewport tanpa sisa */
-    html, body {
-        height: 100%;
-        overflow: hidden; /* Mencegah scroll pada body utama */
-    }
-
-    .app-container {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* 2. Header dibuat lebih ramping agar area katalog lebih luas */
-    header {
-        height: 60px !important;
-        padding: 0 15px !important;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    /* 3. Bar Pencarian menyesuaikan lebar sisa di antara tombol */
-    #search {
-        height: 38px !important;
-        font-size: 14px !important;
-        flex: 1; /* Mengisi ruang tengah */
+    /* 1. Paksa titik pusat animasi tetap di kiri atas, bukan di tombol */
+    .sidebar {
+        transform-origin: left center !important; 
+        
+        /* 2. Pastikan transisi HANYA untuk transform, tidak untuk top/left/opacity */
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        
+        /* 3. Posisi tetap terkunci di layar kiri */
+        top: 0 !important;
+        left: 0 !important;
         margin: 0 !important;
     }
 
-    /* 4. Katalog Produk (Area Scrollable) */
-    .main-content {
-        height: calc(100vh - 60px); /* Sisa layar setelah dikurangi header */
-        overflow-y: auto !important;
-        padding: 15px 10px 100px 10px !important; /* Padding bawah untuk tombol melayang */
-        -webkit-overflow-scrolling: touch;
+    /* 4. Saat Sidebar tersembunyi (Kondisi Awal/Tutup) */
+    .sidebar-hidden .sidebar,
+    .app-container.sidebar-hidden .sidebar {
+        transform: translate3d(-100%, 0, 0) !important;
+        /* Matikan efek floating lain */
+        top: 0 !important; 
     }
 
-    /* 5. Grid Produk Presisi 2 Kolom (Fix untuk lebar 720px) */
-    .product-grid {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px !important;
-        width: 100%;
-    }
-
-    .product-card {
-        min-height: 180px; /* Menjaga konsistensi tinggi kartu */
-        padding: 12px !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    /* 6. Atur ulang posisi tombol-tombol agar tidak bertumpuk */
-    .hamburger-btn, .dark-mode-toggle, .history-btn {
-        position: static !important; /* Lepas dari fixed agar ikut alur header flex */
-        width: 40px !important;
-        height: 40px !important;
-        flex-shrink: 0;
-    }
-
-    /* Tombol Keranjang Melayang di Pojok Bawah */
-    .cart-toggle-mobile {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        border-radius: 30px;
-        z-index: 999;
+    /* 5. Pastikan tombol hamburger tidak ikut menarik sidebar saat animasi */
+    .hamburger-btn {
+        transition: none !important;
     }
 }
