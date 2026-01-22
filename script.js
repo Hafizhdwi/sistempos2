@@ -342,3 +342,28 @@ function toggleSidebar() {
     container.classList.toggle("sidebar-hidden");
   });
 }
+/* --- DARK MODE LOGIC (ADD-ON) --- */
+
+function toggleDarkMode() {
+  const currentTheme = document.documentElement.getAttribute("data-theme");
+  const targetTheme = currentTheme === "dark" ? "light" : "dark";
+  const btn = document.getElementById("dark-mode-btn");
+
+  document.documentElement.setAttribute("data-theme", targetTheme);
+  localStorage.setItem("theme", targetTheme);
+
+  // Ganti Ikon
+  btn.innerText = targetTheme === "dark" ? "☀️" : "🌙";
+
+  showToast(
+    targetTheme === "dark" ? "🌙 Mode Gelap Aktif" : "☀️ Mode Terang Aktif",
+  );
+}
+
+// Cek tema saat halaman pertama kali dibuka
+(function () {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+  const btn = document.getElementById("dark-mode-btn");
+  if (btn) btn.innerText = savedTheme === "dark" ? "☀️" : "🌙";
+})();

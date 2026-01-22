@@ -962,3 +962,299 @@ header button[onclick="toggleCart()"] {
     will-change: transform, opacity;
     -webkit-font-smoothing: antialiased;
 }
+/* --- DARK MODE SYSTEM (ADD-ON) --- */
+
+/* Variabel Warna Dark Mode */
+[data-theme="dark"] {
+    --sidebar-bg: #0f111a;
+    --input-bg: #1e212e;
+    --light-bg: #13151c;
+    --text-dark: #ffffff;
+    --text-muted: #a0aec0;
+    --card-bg: #1e212e;
+    --header-bg: #1a1c23;
+}
+
+/* Styling Tombol Dark Mode */
+.dark-mode-toggle {
+    position: fixed;
+    top: 15px;
+    left: 70px; /* Di sebelah kanan tombol hamburger (45px + jarak) */
+    z-index: 1001;
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease !important;
+}
+
+/* Perubahan warna elemen saat Dark Mode Aktif */
+[data-theme="dark"] body {
+    background: var(--light-bg);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .product-card, 
+[data-theme="dark"] header, 
+[data-theme="dark"] .modern-modal-card {
+    background: var(--card-bg) !important;
+    color: white !important;
+    border-color: rgba(255,255,255,0.05) !important;
+}
+
+[data-theme="dark"] .minimal-input,
+[data-theme="dark"] #search {
+    background: #2d303e !important;
+    color: white !important;
+    border-color: #3f445e !important;
+}
+
+[data-theme="dark"] .product-card h3 {
+    color: white !important;
+}
+
+/* Animasi Tombol saat diklik */
+.dark-mode-toggle:active {
+    transform: scale(0.9);
+}
+/* --- DARK MODE CATALOG TUNING --- */
+
+[data-theme="dark"] .product-card {
+    background: #1e212e !important; /* Warna kartu navy gelap */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .product-card:hover {
+    border-color: var(--primary) !important;
+    background: #25293a !important;
+}
+
+/* Penyesuaian Warna Teks di dalam Kartu */
+[data-theme="dark"] .product-card h3 {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .product-card p {
+    color: #a29bfe !important; /* Harga jadi warna ungu muda agar menyala */
+}
+
+/* Penyesuaian Badge Kategori agar tidak terlalu menyilaukan */
+[data-theme="dark"] .badge-makanan {
+    background: rgba(240, 140, 0, 0.2) !important;
+    color: #ffc078 !important;
+}
+
+[data-theme="dark"] .badge-minuman {
+    background: rgba(25, 113, 194, 0.2) !important;
+    color: #74c0fc !important;
+}
+
+[data-theme="dark"] .badge-camilan {
+    background: rgba(103, 65, 217, 0.2) !important;
+    color: #b197fc !important;
+}
+
+/* Penyesuaian tombol aksi (Edit/Hapus) di dalam kartu */
+[data-theme="dark"] .action-btn {
+    background: #2d303e !important;
+}
+
+[data-theme="dark"] .edit-btn {
+    color: #a29bfe !important;
+}
+
+[data-theme="dark"] .delete-btn {
+    color: #ff7675 !important;
+}
+
+/* Penyesuaian Header & Filter Area */
+[data-theme="dark"] .btn-filter {
+    background: #1e212e !important;
+    color: #a0aec0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .btn-filter.active {
+    background: var(--primary) !important;
+    color: white !important;
+}
+/* --- DARK MODE SEARCH REFINEMENT --- */
+
+/* 1. Menghilangkan bayangan yang mengganggu dan menyesuaikan border */
+[data-theme="dark"] #search {
+    box-shadow: none !important; /* Menghilangkan bayangan persegi panjang */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Border tipis halus */
+    background-color: #2d303e !important; /* Warna input yang serasi */
+    color: white !important;
+}
+
+/* 2. Menghilangkan "glow" biru/hitam saat input diklik (fokus) */
+[data-theme="dark"] #search:focus {
+    box-shadow: 0 0 0 2px rgba(162, 155, 254, 0.3) !important; /* Glow ungu tipis saja */
+    outline: none !important;
+    border-color: #a29bfe !important;
+}
+
+/* 3. Menyesuaikan warna icon search (jika ada) atau placeholder */
+[data-theme="dark"] #search::placeholder {
+    color: #a0aec0 !important;
+    opacity: 0.7;
+}
+
+/* 4. Menghilangkan bayangan pada header agar tidak ada garis persegi di atas */
+[data-theme="dark"] header {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+/* --- DARK MODE SEARCH FIX (HARD RESET) --- */
+
+[data-theme="dark"] header, 
+[data-theme="dark"] .search-container,
+[data-theme="dark"] div:has(> #search) {
+    background-color: transparent !important; /* Menghilangkan background pembungkus */
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+[data-theme="dark"] #search {
+    /* Menghilangkan semua gaya bawaan browser (iOS/Android/Chrome) */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    
+    /* Warna latar belakang input yang benar-benar solid */
+    background-color: #2d303e !important; 
+    color: #ffffff !important;
+    
+    /* Menghilangkan bayangan dan border yang mengganggu */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
+    
+    /* Memastikan tidak ada outline aneh */
+    outline: none !important;
+}
+
+/* Memastikan area sekitar filter juga bersih dari bayangan putih */
+[data-theme="dark"] .main-content > div:nth-child(2) {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+/* --- DARK MODE DROPDOWN FIX --- */
+
+/* 1. Menyesuaikan kotak Select saat Dark Mode */
+[data-theme="dark"] select,
+[data-theme="dark"] .minimal-input,
+[data-theme="dark"] #edit-category {
+    background-color: #2d303e !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    /* Menghapus gaya default panah di beberapa browser */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 30px !important;
+}
+
+/* 2. Menyesuaikan isi pilihan (Option) agar teks terlihat */
+[data-theme="dark"] select option {
+    background-color: #1e212e !important; /* Warna gelap agar teks putih kontras */
+    color: white !important;
+}
+
+/* 3. Menghilangkan highlight biru default yang mengganggu di beberapa browser */
+[data-theme="dark"] select:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+}
+/* --- FIX WARNA MODAL EDIT DI DARK MODE --- */
+
+/* 1. Paksa background Modal Card jadi gelap */
+[data-theme="dark"] .modern-modal-card,
+[data-theme="dark"] .modal-content {
+    background-color: #1e212e !important;
+    color: white !important;
+}
+
+/* 2. Paksa semua input dan select di dalam modal agar background-nya gelap */
+[data-theme="dark"] .modern-modal-card input,
+[data-theme="dark"] .modern-modal-card select,
+[data-theme="dark"] .modern-modal-card textarea {
+    background-color: #2d303e !important; /* Warna abu gelap */
+    color: white !important; /* Teks putih */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 3. Khusus untuk elemen select sebelum diklik (Initial State) */
+[data-theme="dark"] select {
+    color: white !important;
+    background-color: #2d303e !important;
+}
+
+/* 4. Perbaiki label input agar terbaca */
+[data-theme="dark"] .modern-modal-card label {
+    color: #a0aec0 !important;
+}
+
+/* 5. Perbaiki judul modal */
+[data-theme="dark"] .modern-modal-card h2,
+[data-theme="dark"] .modern-modal-card h3 {
+    color: white !important;
+}
+/* --- FIX OVERSPACE & MOBILE HEIGHT ISSUES --- */
+
+@media (max-width: 768px) {
+    /* 1. Reset tinggi container agar tidak memaksa space tambahan */
+    html, body {
+        height: -webkit-fill-available; /* Fix untuk browser mobile */
+        overflow-x: hidden;
+        background-color: var(--light-bg); /* Pastikan background warna dasar */
+    }
+
+    .app-container {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        display: flex;
+        flex-direction: column;
+        height: auto !important; /* Biarkan konten menentukan tinggi */
+    }
+
+    /* 2. Bersihkan Main Content dari margin/padding berlebih */
+    .main-content {
+        flex: 1; /* Mengisi ruang yang tersedia saja */
+        padding-bottom: 100px !important; /* Ruang untuk tombol keranjang mengambang */
+        height: auto !important;
+        min-height: unset !important;
+        overflow-y: visible !important; /* Hindari double scrollbar */
+    }
+
+    /* 3. Pastikan Product Grid tidak mendorong footer/space kosong */
+    .product-grid {
+        padding-bottom: 20px !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 4. Fix Dark Mode background agar tidak terpotong di bawah */
+    [data-theme="dark"] body {
+        background-attachment: fixed;
+    }
+}
+
+/* 5. Sembunyikan scrollbar yang mengganggu estetika mobile */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
