@@ -353,3 +353,85 @@ input[type="number"] {
 .toast.show {
   bottom: 30px;
 }
+/* --- KODE TAMBAHAN UNTUK MOBILE & RASIO 9:16 --- */
+
+@media (max-width: 768px) {
+  /* Memungkinkan seluruh halaman di-scroll karena layar HP memanjang */
+  body {
+    overflow-y: auto;
+  }
+
+  .app-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Sidebar (Panel Input) diletakkan di atas */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Area Katalog Produk */
+  .main-content {
+    padding: 15px;
+    overflow-y: visible;
+  }
+
+  /* Header (Search & Tombol Pesanan) */
+  header {
+    flex-direction: column !important;
+    gap: 15px;
+    align-items: stretch !important;
+  }
+
+  #search {
+    width: 100% !important;
+    margin: 0;
+  }
+
+  /* Grid Produk: Dibuat 2 kolom agar pas di layar HP yang sempit */
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .product-card {
+    padding: 20px 10px;
+    border-radius: 20px;
+  }
+
+  /* Modal (Pop-up) agar tidak terpotong di HP */
+  .modern-modal-card {
+    width: 92%;
+    padding: 25px;
+    margin: 10px;
+  }
+
+  /* Memperbaiki tampilan tombol kategori agar bisa di-scroll menyamping jika penuh */
+  .main-content > div:nth-child(2) {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    justify-content: flex-start !important;
+  }
+
+  .btn-filter {
+    flex-shrink: 0;
+  }
+}
+
+/* Khusus untuk HP dengan layar sangat sempit */
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+  
+  .product-card h3 {
+    font-size: 0.9rem;
+  }
+}
