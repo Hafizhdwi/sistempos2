@@ -265,3 +265,23 @@ function toggleSidebar() {
     }
   }, 450); // Menunggu animasi CSS sidebar selesai (0.4s)
 }
+/* --- OPTIMASI JAVASCRIPT (OVERRIDE) --- */
+
+function toggleSidebar() {
+  const container = document.getElementById("app-container");
+
+  // Gunakan class khusus untuk memberi tahu browser animasi akan dimulai
+  container.style.pointerEvents = "none";
+
+  requestAnimationFrame(() => {
+    container.classList.toggle("sidebar-hidden");
+  });
+
+  // Mengurangi beban kerja: Hanya render ulang SEKALI setelah animasi selesai
+  setTimeout(() => {
+    container.style.pointerEvents = "auto";
+    if (typeof renderProducts === "function") {
+      renderProducts();
+    }
+  }, 300); // Durasi disesuaikan dengan transisi CSS (0.25s)
+}

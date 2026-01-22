@@ -740,3 +740,29 @@ header button[onclick="toggleCart()"] {
         top: 15px !important;
     }
 }
+/* --- OPTIMASI ANTI-LAG (OVERRIDE) --- */
+
+/* 1. Paksa browser menggunakan GPU untuk kartu produk & sidebar */
+.product-card, .sidebar, .main-content {
+    backface-visibility: hidden;
+    perspective: 1000;
+    transform: translateZ(0); /* Akselerasi Hardware */
+    will-change: transform, opacity;
+}
+
+/* 2. Ubah transisi 'all' yang berat menjadi 'transform' yang ringan */
+* {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s linear !important;
+}
+
+/* 3. Matikan backdrop-filter blur yang sangat berat di HP */
+.modal-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(0, 0, 0, 0.75) !important; /* Hitam pekat transparan tetap elegan */
+}
+
+/* 4. Optimasi rendering grid saat sidebar bergeser */
+.product-grid {
+    contain: content;
+}
