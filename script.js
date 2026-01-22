@@ -244,3 +244,24 @@ function deleteProduct(id, e) {
 }
 
 renderProducts();
+// Fungsi untuk Sembunyi/Tampilkan Sidebar
+function toggleSidebar() {
+  const container = document.getElementById("app-container");
+  container.classList.toggle("sidebar-hidden");
+
+  // Tunggu animasi selesai, lalu render ulang grid agar layout pas
+  setTimeout(() => {
+    renderProducts();
+  }, 450);
+}
+function toggleSidebar() {
+  const container = document.getElementById("app-container");
+  container.classList.toggle("sidebar-hidden");
+
+  // Re-render produk agar grid menyesuaikan lebar layar yang baru
+  setTimeout(() => {
+    if (typeof renderProducts === "function") {
+      renderProducts();
+    }
+  }, 450); // Menunggu animasi CSS sidebar selesai (0.4s)
+}

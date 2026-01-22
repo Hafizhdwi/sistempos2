@@ -298,22 +298,22 @@ input[type="number"] {
   top: 20px;
   right: 20px;
   border: none;
-  
+
   /* Ukuran & Layout */
-  width: 36px;  /* Sedikit diperbesar agar lebih enak diklik */
+  width: 36px; /* Sedikit diperbesar agar lebih enak diklik */
   height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   /* Warna Awal */
   background: #f1f2f6;
   color: #636e72;
   font-weight: 700;
   font-size: 1.1rem;
   cursor: pointer;
-  
+
   /* --- ANIMASI MAGIC --- */
   /* Menggunakan cubic-bezier untuk efek membal (bouncy) */
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -323,7 +323,7 @@ input[type="number"] {
 /* Animasi saat Mouse diarahkan (Hover) */
 .close-modal-btn:hover {
   background: var(--danger); /* Berubah jadi merah */
-  color: white;              /* Icon X jadi putih */
+  color: white; /* Icon X jadi putih */
   transform: rotate(180deg) scale(1.15); /* Muter 180 derajat & membesar */
   box-shadow: 0 5px 15px rgba(255, 118, 117, 0.5); /* Efek glowing merah */
 }
@@ -430,8 +430,313 @@ input[type="number"] {
     font-size: 1.4rem;
     text-align: center;
   }
-  
+
   .product-card h3 {
     font-size: 0.9rem;
   }
+}
+/* --- FITUR COLLAPSIBLE SIDEBAR --- */
+
+/* Tombol Hamburger */
+.hamburger-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background: var(--primary);
+  color: white;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Memastikan Sidebar punya transisi halus */
+.sidebar {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transform: translateX(0);
+}
+
+/* Container saat Sidebar Tersembunyi */
+.app-container.sidebar-hidden .sidebar {
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+/* Tombol Keranjang Tetap di Pojok Kanan Atas (Fixed) */
+header button[onclick="toggleCart()"] {
+  position: fixed !important;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Penyesuaian jarak Header agar tidak tertutup tombol */
+.main-content header {
+  padding-left: 60px; /* Memberi ruang untuk tombol hamburger */
+  padding-right: 120px; /* Memberi ruang untuk tombol keranjang */
+}
+
+/* Responsif Mobile */
+@media (max-width: 768px) {
+  .app-container.sidebar-hidden .sidebar {
+    height: 0 !important;
+    transform: translateY(-100%);
+  }
+
+  .main-content header {
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 60px; /* Memberi ruang agar header di bawah tombol */
+  }
+}
+/* --- FIX UNTUK SIDEBAR TOGGLE --- */
+
+/* Memastikan main-content mengambil sisa ruang yang ada */
+.main-content {
+  flex: 1;
+  transition: all 0.4s ease;
+}
+
+/* Saat sidebar hilang, pastikan tidak ada padding tersisa di kiri */
+.app-container.sidebar-hidden .sidebar {
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Memastikan grid produk menghitung ulang kolom (2 kolom di HP, 4-6 di Desktop) */
+.app-container.sidebar-hidden .product-grid {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+/* Responsif untuk HP: Sidebar menutup ke atas bukan ke kiri */
+@media (max-width: 768px) {
+  .app-container.sidebar-hidden .sidebar {
+    height: 0 !important;
+    transform: translateY(-100%);
+    width: 100% !important;
+  }
+}
+/* --- PENYESUAIAN POSISI KONTEN SIDEBAR --- */
+
+.sidebar {
+  /* Memberi ruang di bagian atas agar tidak tertutup tombol hamburger */
+  padding-top: 80px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  /* Membuat logo/tulisan SmartPOS lebih manis posisinya */
+  margin-bottom: 40px !important;
+  text-align: center;
+}
+
+/* Mempercantik tampilan form input agar tidak terlalu rapat */
+.sidebar input,
+.sidebar select,
+.price-input-wrapper {
+  margin-bottom: 25px !important;
+}
+
+.btn-add {
+  margin-top: 10px;
+}
+
+/* Penyesuaian khusus Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    /* Di HP, jarak atas tidak perlu terlalu besar karena layoutnya tumpuk */
+    padding-top: 70px !important;
+    padding-bottom: 30px;
+  }
+
+  .brand {
+    margin-bottom: 25px !important;
+  }
+}
+/* --- PENYESUAIAN POSISI HEADER SAAT SIDEBAR SEMBUNYI --- */
+
+/* 1. Mengatur Header agar bisa diatur posisinya */
+.main-content header {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex !important;
+  flex-direction: column; /* Membuat search & filter bertumpuk atau sejajar */
+  align-items: flex-start; /* Posisi default (saat sidebar ada) */
+}
+
+/* 2. Saat Sidebar Tersembunyi, buat Header ke Tengah */
+.app-container.sidebar-hidden .main-content header,
+.app-container.sidebar-hidden .main-content > div:nth-child(2) {
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center;
+}
+
+/* 3. Menyesuaikan Search Bar agar ikut ke tengah saat sidebar sembunyi */
+.app-container.sidebar-hidden #search {
+  margin: 0 auto !important;
+  display: block;
+}
+
+/* 4. Menyesuaikan pembungkus Filter & Tombol Urut A-Z */
+.app-container.sidebar-hidden .main-content > div:nth-child(2) {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100%;
+  gap: 15px;
+}
+
+/* 5. Hilangkan padding tambahan di main-content agar benar-benar simetris di tengah */
+.app-container.sidebar-hidden .main-content {
+  padding-left: 40px; 
+  padding-right: 40px;
+}
+
+/* Penyesuaian untuk Mobile agar tetap rapi */
+@media (max-width: 768px) {
+  .app-container.sidebar-hidden .main-content header {
+    padding-top: 20px;
+  }
+}
+/* --- OPTIMALISASI LAYOUT PENGGUNA UMUM (CENTERED UI) --- */
+
+/* 1. Mengatur container filter agar lebih fleksibel */
+.main-content > div:nth-child(2) {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+/* 2. Kondisi saat Sidebar Tersembunyi (Sidebar-Hidden) */
+.app-container.sidebar-hidden .main-content header,
+.app-container.sidebar-hidden .main-content > div:nth-child(2) {
+    display: flex !important;
+    flex-direction: column !important; /* Susun vertikal: Search di atas, Filter di bawah */
+    align-items: center !important;
+    justify-content: center !important;
+    max-width: 800px; /* Batasi lebar agar tidak terlalu lebar di monitor besar */
+    margin: 0 auto 30px auto !important;
+}
+
+/* 3. Membuat Search bar lebih elegan saat Sidebar Hidden */
+.app-container.sidebar-hidden #search {
+    width: 100% !important; /* Melebar mengikuti container 800px */
+    max-width: 600px;
+    margin-bottom: 20px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* 4. Mengatur barisan tombol filter agar rapi di tengah */
+.app-container.sidebar-hidden .main-content > div:nth-child(2) {
+    flex-direction: row !important; /* Tombol filter tetap berjejer ke samping */
+    flex-wrap: wrap; /* Jika layar sempit, tombol akan turun ke bawah */
+    gap: 12px !important;
+    justify-content: center !important;
+}
+
+/* 5. Memberikan efek fokus pada area konten */
+.app-container.sidebar-hidden .main-content {
+    background: #fdfdff; /* Sedikit perubahan warna background agar fokus ke produk */
+}
+
+/* Penyesuaian Mobile: Pastikan di HP tetap proporsional */
+@media (max-width: 768px) {
+    .app-container.sidebar-hidden .main-content header,
+    .app-container.sidebar-hidden .main-content > div:nth-child(2) {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+}
+/* --- KUNCI POSISI FILTER KE TENGAH (SELALU) --- */
+
+/* 1. Mengatur container filter (div kedua di main-content) */
+.main-content > div:nth-child(2) {
+    display: flex !important;
+    justify-content: center !important; /* Kunci ke tengah secara horizontal */
+    align-items: center !important;
+    width: 100%;
+    margin-bottom: 25px !important;
+    gap: 12px !important;
+    flex-wrap: wrap; /* Agar rapi jika tombol filter banyak di layar HP */
+    transition: all 0.4s ease;
+}
+
+/* 2. Memastikan Search Bar juga selalu di tengah secara default */
+.main-content header {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100%;
+    transition: all 0.4s ease;
+}
+
+#search {
+    margin: 0 auto !important; /* Memaksa search bar di tengah */
+    max-width: 500px; /* Batasi lebar agar tetap elegan */
+    width: 100%;
+}
+
+/* 3. Penyesuaian khusus saat Sidebar muncul (Desktop) */
+/* Memberikan padding agar konten tidak mepet ke sidebar yang sedang terbuka */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Menyelaraskan seluruh konten ke tengah */
+}
+
+.product-grid {
+    width: 100%; /* Pastikan grid tetap memenuhi ruang yang ada */
+}
+/* --- MENGUNCI UKURAN DEFAULT SEARCH BAR --- */
+
+/* 1. Menentukan lebar default yang tetap untuk Search Bar */
+#search {
+    width: 300px !important; /* Ukuran default yang kamu miliki di awal */
+    max-width: 300px !important; 
+    transition: none !important; /* Menghilangkan animasi lebar agar tidak berubah-ubah */
+    margin: 0 auto !important; /* Tetap di tengah karena header kita sudah center */
+}
+
+/* 2. Memastikan Header tidak memaksa search bar melebar */
+.main-content header {
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100%;
+}
+
+/* 3. Menyesuaikan posisi di Mobile (agar tidak terlalu kecil di layar sempit) */
+@media (max-width: 480px) {
+    #search {
+        width: 90% !important; /* Di HP tetap biarkan mengikuti lebar layar agar nyaman diketik */
+        max-width: 90% !important;
+    }
+}
+/* --- PENYESUAIAN POSISI TOMBOL KERANJANG --- */
+
+/* Menggeser posisi tombol keranjang ke kiri */
+header button[onclick="toggleCart()"] {
+    right: 40px !important; /* Nilai default sebelumnya 15px/20px, kita geser ke 40px */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Penyesuaian khusus untuk layar HP */
+@media (max-width: 768px) {
+    header button[onclick="toggleCart()"] {
+        right: 25px !important; /* Di HP geser sedikit saja agar tidak menutupi area produk */
+        top: 15px !important;
+    }
 }

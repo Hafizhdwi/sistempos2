@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="id">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>SmartPOS</title>
     <link rel="stylesheet" href="style.css" />
     <link
@@ -11,7 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
-    <div class="app-container">
+    <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+    <div class="app-container" id="app-container">
       <aside class="sidebar">
         <div class="brand">🚀 Smart<span>POS</span></div>
         <input type="text" id="new-name" placeholder="Nama Menu" />
