@@ -766,3 +766,32 @@ header button[onclick="toggleCart()"] {
 .product-grid {
     contain: content;
 }
+/* --- ULTRA SMOOTH PERFORMANCE FOR MOBILE --- */
+
+/* 1. Matikan bayangan (box-shadow) saat animasi berjalan agar ringan */
+.app-container.sidebar-hidden .product-card,
+.app-container.sidebar-hidden .sidebar {
+    box-shadow: none !important;
+}
+
+/* 2. Optimasi Sidebar: Gunakan TranslateX daripada Width */
+/* Menggeser jauh lebih ringan daripada mengubah ukuran lebar */
+.sidebar {
+    will-change: transform;
+    transform: translateZ(0); 
+}
+
+/* 3. Mencegah Text-Selection saat klik tombol (bikin lag di HP) */
+* {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* 4. Sederhanakan Product Grid di HP */
+@media (max-width: 768px) {
+    .product-card {
+        /* Kurangi radius dan animasi kompleks di mobile */
+        transition: transform 0.2s ease !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+    }
+}

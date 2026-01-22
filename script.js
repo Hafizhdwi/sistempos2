@@ -285,3 +285,25 @@ function toggleSidebar() {
     }
   }, 300); // Durasi disesuaikan dengan transisi CSS (0.25s)
 }
+/* --- OPTIMASI LOGIKA RENDER --- */
+
+// Kita ganti cara kerja toggle agar tidak memaksa HP berpikir berat
+function toggleSidebar() {
+  const container = document.getElementById("app-container");
+
+  // 1. Tambahkan class 'is-animating' untuk mematikan fitur berat sementara
+  container.classList.add("is-animating");
+
+  // 2. Jalankan animasi
+  container.classList.toggle("sidebar-hidden");
+
+  // 3. Tunggu sampai animasi benar-benar selesai baru nyalakan fitur berat lagi
+  setTimeout(() => {
+    container.classList.remove("is-animating");
+    // Gunakan fungsi render yang hanya memperbarui yang perlu saja
+    if (typeof renderProducts === "function") {
+      // Kita beri sedikit delay tambahan agar HP tidak kaget
+      window.requestAnimationFrame(renderProducts);
+    }
+  }, 400);
+}
